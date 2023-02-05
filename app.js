@@ -3,6 +3,8 @@ dotenv.config()
 
 import {routes} from './routes/routs.js';
 import {Router} from './libs/Http/Router/Router.js';
+// import {request} from './test.js';
+import http from "node:http";
 
 function createApp(){
     const app = function(req, res, next) {
@@ -10,18 +12,26 @@ function createApp(){
     };
 
     app.handle = function handle(req, res, callback) {
+        req.jsonString = '';
+        req.on('data', (data) => {
+            req.jsonString  += data;
+        });
         const result = new Router(routes.getRoutes()).match(req)
-
-
         // final handler
         const done = callback;
-
-        // no routes
+        // если нет маршрутов
         if (!result) {
             console.log('no routes defined on app');
+            res.setHeader("Content-Type", "application/json");
+            res.writeHead(404);
+            res.end(JSON.stringify({res: 'Неправильный запрос!'} ));
             return;
         }
-        result.handler(req, res, done);
+        // передам парамеры с урла в обьект запроса
+        req.params = { ...result.attributes}
+        req.on('end', () => {
+            result.handler(req, res, done);
+        });
     };
     return app;
 }

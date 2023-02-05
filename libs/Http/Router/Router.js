@@ -6,13 +6,13 @@ export class RouteCollection {
         this.routes.push(route);
     }
     get(pattern, handler){
-        this.addRoute(new RegexpRoute(pattern, handler, 'GET'))
+        this.addRoute(new RegexpRoute(pattern, handler, ['GET']))
     }
     post(pattern, handler){
-        this.addRoute(new RegexpRoute(pattern, handler, 'POST'))
+        this.addRoute(new RegexpRoute(pattern, handler, ['POST', 'OPTIONS']))
     }
     put(pattern, handler){
-        this.addRoute(new RegexpRoute(pattern, handler, 'PUT'))
+        this.addRoute(new RegexpRoute(pattern, handler, ['PUT']))
     }
     getRoutes() {
         return this.routes;
@@ -28,7 +28,8 @@ class RegexpRoute {
 
     match(request) {
         // Проверяем совпадение метода в запросе с методами маршрутов
-        if(this.methods && this.methods !== request.method){
+
+        if(this.methods && !this.methods.includes(request.method)){
             return null;
         }
 

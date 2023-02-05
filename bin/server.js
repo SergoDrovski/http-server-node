@@ -14,7 +14,6 @@ import {app} from '../app.js';
  */
 
 const port = normalizePort(process.env.PORT || '4000');
-// app.set('port', port);
 
 /**
  * Create HTTP server.
