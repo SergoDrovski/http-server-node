@@ -3,8 +3,7 @@ dotenv.config()
 
 import {routes} from './routes/routs.js';
 import {Router} from './libs/Http/Router/Router.js';
-// import {request} from './test.js';
-import http from "node:http";
+import {response} from './libs/Http/Response/Response.js';
 
 function createApp(){
     const app = function(req, res, next) {
@@ -16,6 +15,9 @@ function createApp(){
         req.on('data', (data) => {
             req.jsonString  += data;
         });
+
+        Object.assign(res, response);
+
         const result = new Router(routes.getRoutes()).match(req)
         // final handler
         const done = callback;
