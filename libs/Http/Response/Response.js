@@ -1,18 +1,20 @@
 
 export const response = Object.create(null);
 
-response.status = function (status){
-	if(!this.getHeader('Content-Type')){
+response.status = function (status = null){
+	debugger
+	let header = this.getHeader('Content-Type');
+	if(!header){
 		this.setHeader("Content-Type", "application/json");
 	}
-	if(status) {
+	let getStatus = this.statusCode;
+	if(getStatus !== status) {
 		this.writeHead(status);
-		return;
 	}
-	this.writeHead(200);
 }
 
 response.json = function (data){
+	debugger
 	let string = data ? data : {};
 	this.status(this.statusCode);
 	this.end(JSON.stringify(string));

@@ -78,7 +78,6 @@ describe("Routs test", function(){
                 .delete(url)
                 .expect(function (response){
                     userScheme.findById(user._id).then(data => {
-                        debugger
                         assert.equal(data, null);
                     }).catch(e => {
                         return e;
@@ -92,5 +91,23 @@ describe("Routs test", function(){
         }).catch(e => {
             return e;
         });
+    });
+})
+
+describe("Error Routs test", function(){
+    it("rout POST /api/users should return Error fields", function(done){
+        request(app)
+            .post("/api/users")
+            .send({username: 'master', password: 'xhrgfTMeaMvogyL4'})
+            .expect(function (response){
+                debugger
+                let res = response.body;
+                assert.equal(res.status, 404);
+                assert.equal(res.data, null);
+            })
+            .end(function(err, res) {
+                if (err) return done(err);
+                return done();
+            });
     });
 })

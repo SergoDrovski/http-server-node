@@ -25,7 +25,8 @@ const port = normalizePort(process.env.PORT || '4000');
 /**
  * Listen on provided port, on all network interfaces.
  */
-const startServer = (db) => {
+const startServer = () => {
+  connectDb();
   const server = http.createServer(app);
   server.listen(port);
   server.on('error', onError);
@@ -70,12 +71,7 @@ const startServer = (db) => {
   }
 }
 
-connectDb().then((db)=>{
-  startServer(db)
-}).catch(e => {
-  console.log(e)
-})
-
+startServer();
 /**
  * Normalize a port into a number, string, or false.
  */

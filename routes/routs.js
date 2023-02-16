@@ -17,10 +17,13 @@ routes.post('/api/users', async (req, res) => {
     try {
         let data = JSON.parse(req.jsonString);
         let newUser = await userScheme.save(data);
-        res.json(new Response(200, newUser));
+        if(newUser){
+            res.json(new Response(200, newUser));
+        }
     } catch (e) {
+        let data = new Response(404, null, e.message);
         res.status(404);
-        res.json(new Response(404, null, e.message));
+        res.json(data);
     }
 })
 
