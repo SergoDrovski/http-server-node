@@ -14,6 +14,9 @@ export class RouteCollection {
     put(pattern, handler){
         this.addRoute(new RegexpRoute(pattern, handler, ['PUT']))
     }
+    delete(pattern, handler){
+        this.addRoute(new RegexpRoute(pattern, handler, ['DELETE']))
+    }
     getRoutes() {
         return this.routes;
     }
@@ -43,7 +46,7 @@ class RegexpRoute {
 
         // Получаем рег.выражение для извлечения пути из URLa
         const pattern = this.pattern.replace(/\{([^\}]+)\}/, function (match, p1) {
-            return '(?<' + p1 + '>[a-zA-Z|\\d]+)';
+            return '(?<' + p1 + '>[a-zA-Z|\\d|-]+)';
         });
 
         const addSlashesPattern = new RegExp(pattern);
